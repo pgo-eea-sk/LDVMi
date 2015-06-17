@@ -16,14 +16,14 @@ import scala.concurrent.Future
 
 class DataCubeApiController(implicit inj: Injector) extends ApiController {
 
-  def dataStructures(id: Long) = DBAction { implicit rs =>
+  def dataStructures(id: Long) = Action.async { implicit rs =>
     withEvaluation(id) { evaluation =>
       Ok(Json.toJson(dataCubeService.getDataStructures(evaluation)))
     }
   }
 
 
-  def dataStructureComponents(id: Long, uri: String) = DBAction { implicit rs =>
+  def dataStructureComponents(id: Long, uri: String) = Action.async { implicit rs =>
     withEvaluation(id) { evaluation =>
       val components = dataCubeService.getDataStructureComponents(evaluation, uri)
       val componentsJson = Seq("components" -> components).toMap
@@ -31,7 +31,7 @@ class DataCubeApiController(implicit inj: Injector) extends ApiController {
     }
   }
 
-  def values(id: Long) = DBAction(parse.json(1024 * 1024 * 100)) { implicit rs =>
+  def values(id: Long) = Action.async(parse.json(1024 * 1024 * 100)) { implicit rs =>
     val json: JsValue = rs.request.body
     val urisValidation = (json \ "uris").validate[List[String]]
 
@@ -45,7 +45,7 @@ class DataCubeApiController(implicit inj: Injector) extends ApiController {
 
   }
 
-  def sliceCube(id: Long) = DBAction(parse.json(1024 * 1024 * 100)) { implicit rs =>
+  def sliceCube(id: Long) = Action.async(parse.json(1024 * 1024 * 100)) { implicit rs =>
     val json: JsValue = rs.request.body
 
     withEvaluation(id, json) { case (evaluation, queryData) =>
@@ -74,7 +74,7 @@ class DataCubeApiController(implicit inj: Injector) extends ApiController {
 
   }
 
-  def datasets(id: Long) = DBAction { implicit rs =>
+  def datasets(id: Long) = Action.async { implicit rs =>
     withEvaluation(id) { evaluation =>
       Ok(Json.toJson(dataCubeService.getDatasets(evaluation)))
     }

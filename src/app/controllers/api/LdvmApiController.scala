@@ -2,7 +2,7 @@ package controllers.api
 
 import model.entity.CustomUnicornPlay
 import model.service.LdvmService
-import play.api.db.slick.DBAction
+import play.api.db.slick.Action.async
 import play.api.libs.json._
 import play.api.mvc.Controller
 import scaldi.{Injectable, Injector}
@@ -12,7 +12,7 @@ class LdvmApiController(implicit inj: Injector) extends Controller with Injectab
 
   val ldvmService = inject[LdvmService]
 
-  def ttl = DBAction(parse.multipartFormData) { implicit rs =>
+  def ttl = Action.async(parse.multipartFormData) { implicit rs =>
 
     val uploadedFile = rs.request.body.file("file")
     uploadedFile.map { ttlFile =>

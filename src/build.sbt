@@ -1,8 +1,8 @@
 import play.PlayScala
 
-name := """payola-viz"""
+name := """ldvmi"""
 
-version := "1.0-SNAPSHOT"
+version := "1.0.0-beta3"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
@@ -19,6 +19,10 @@ libraryDependencies ++= Seq(
   cache,
   ws,
   filters,
+  evolutions,
+  "com.typesafe.play" %% "play-slick" % "1.0.0",
+  "com.typesafe.play" %% "play-slick-evolutions" % "1.0.0",
+  "com.h2database" % "h2" % "1.4.187",
   "com.typesafe.slick" %% "slick" % "2.1.0",
   "org.webjars" %% "webjars-play" % "2.3.0-2",
   "org.webjars" % "angularjs" % "1.2.24",

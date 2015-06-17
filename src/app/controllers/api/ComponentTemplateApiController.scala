@@ -3,21 +3,21 @@ package controllers.api
 import controllers.api.JsonImplicits._
 import model.entity.{ComponentTemplate, ComponentTemplateId}
 import play.api.Play.current
-import play.api.db.slick.{DBAction, _}
+import play.api.db.slick.{Action.async, _}
 import play.api.libs.json._
 import play.api.mvc.Result
 import scaldi.{Injectable, Injector}
 
 class ComponentTemplateApiController(implicit inj: Injector) extends ApiController with Injectable {
 
-  def delete(componentTemplateId: Long) = DBAction { implicit rws =>
+  def delete(componentTemplateId: Long) = Action.async { implicit rws =>
     withComponentTemplate(componentTemplateId) { ct =>
       componentTemplateService.delete(ct)
       Ok
     }
   }
 
-  def list(skip: Int = 0, take: Int = 50) = DBAction { implicit rws =>
+  def list(skip: Int = 0, take: Int = 50) = Action.async { implicit rws =>
 
     val componentTemplates = componentTemplateService.findPaginated(skip, take)()
     val ids = componentTemplates.map(_.id.get)
@@ -36,37 +36,37 @@ class ComponentTemplateApiController(implicit inj: Injector) extends ApiControll
     Ok(result)
   }
 
-  def findById(id: Long) = DBAction { implicit rws =>
+  def findById(id: Long) = Action.async { implicit rws =>
     withComponentTemplate(id) { componentTemplate =>
       Ok(Json.toJson(componentTemplate))
     }
   }
 
-  def featuresById(id: Long) = DBAction { implicit rws =>
+  def featuresById(id: Long) = Action.async { implicit rws =>
     withComponentTemplate(id) { componentTemplate =>
       Ok(Json.toJson(componentTemplate.features))
     }
   }
 
-  def inputsById(id: Long) = DBAction { implicit rws =>
+  def inputsById(id: Long) = Action.async { implicit rws =>
     withComponentTemplate(id) { componentTemplate =>
       Ok(Json.toJson(componentTemplate.inputTemplates.map(_.dataPortTemplate)))
     }
   }
 
-  def outputById(id: Long) = DBAction { implicit rws =>
+  def outputById(id: Long) = Action.async { implicit rws =>
     withComponentTemplate(id) { componentTemplate =>
       Ok(Json.toJson(componentTemplate.outputTemplate.map(_.dataPortTemplate)))
     }
   }
 
-  def descriptorsById(id: Long) = DBAction { implicit rws =>
+  def descriptorsById(id: Long) = Action.async { implicit rws =>
     withComponentTemplate(id) { componentTemplate =>
       Ok(Json.toJson(componentTemplate.features.flatMap(_.descriptors)))
     }
   }
 
-  def addDatasource = DBAction { implicit rws =>
+  def addDatasource = Action.async { implicit rws =>
     rws.request.body.asJson.flatMap { json =>
       val endpointUrl = (json \ "endpointUrl").as[String]
       val graphUris = (json \ "graphUris").as[Seq[String]]

@@ -2,7 +2,7 @@ package controllers.api
 
 import model.entity.PipelineEvaluation
 import model.rdf.sparql.geo.MapQueryData
-import play.api.db.slick.DBAction
+import play.api.db.slick.Action.async
 import play.api.libs.json._
 import play.api.mvc.Result
 import scaldi.Injector
@@ -20,7 +20,7 @@ class MapApiController(implicit inj: Injector) extends ApiController {
     geoService.polygonEntitiesProperties(pipelineEvaluation)
   } { entities => Json.toJson(entities) }
 
-  def markers(id: Long) = DBAction(parse.json(1024 * 1024 * 100)) { implicit rs =>
+  def markers(id: Long) = Action.async(parse.json(1024 * 1024 * 100)) { implicit rs =>
     val json: JsValue = rs.request.body
 
     withEvaluation(id, json) { case (evaluation, query) =>
@@ -28,7 +28,7 @@ class MapApiController(implicit inj: Injector) extends ApiController {
     }
   }
 
-  def properties(id: Long) = DBAction { implicit rs =>
+  def properties(id: Long) = Action.async { implicit rs =>
     withEvaluation(id) { evaluation =>
 
       val json = geoService.properties(evaluation).map(_.map { case (uri, maybeLabel) =>

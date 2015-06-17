@@ -1,7 +1,7 @@
 package controllers.api
 
 import model.entity.PipelineEvaluation
-import play.api.db.slick.DBAction
+import play.api.db.slick.Action.async
 import play.api.db.slick._
 import play.api.libs.json.{JsError, JsSuccess, Json, JsValue}
 import play.api.mvc.{Action, Result}
@@ -10,13 +10,13 @@ import JsonImplicits._
 
 class SkosApiController(implicit inj: Injector) extends ApiController {
 
-  def schemes(id: Long) = DBAction { implicit rs =>
+  def schemes(id: Long) = Action.async { implicit rs =>
     withEvaluation(id) { evaluation =>
       Ok(Json.toJson(visualizationService.skosSchemes(evaluation)))
     }
   }
 
-  def concepts(id: Long): Action[JsValue] = DBAction(parse.json(1024 * 1024 * 100)) { implicit rs =>
+  def concepts(id: Long): Action[JsValue] = Action.async(parse.json(1024 * 1024 * 100)) { implicit rs =>
     val json: JsValue = rs.request.body
 
     withEvaluation(id, json) { case (evaluation, uris) =>
@@ -24,13 +24,13 @@ class SkosApiController(implicit inj: Injector) extends ApiController {
     }
   }
 
-  def scheme(id: Long, schemeUri: String) = DBAction { implicit rs =>
+  def scheme(id: Long, schemeUri: String) = Action.async { implicit rs =>
     withEvaluation(id) { evaluation =>
       Ok(Json.toJson(visualizationService.skosScheme(evaluation, schemeUri)))
     }
   }
 
-  def conceptsCounts(id: Long): Action[JsValue] = DBAction(parse.json(1024 * 1024 * 100)) { implicit rs =>
+  def conceptsCounts(id: Long): Action[JsValue] = Action.async(parse.json(1024 * 1024 * 100)) { implicit rs =>
     val json: JsValue = rs.request.body
 
     withEvaluation(id) { evaluation =>

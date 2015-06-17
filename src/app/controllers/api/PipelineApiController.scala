@@ -17,7 +17,7 @@ class PipelineApiController(implicit inj: Injector) extends Controller with Inje
 
   val pipelineService = inject[PipelineService]
 
-  def findById(id: Long) = DBAction { implicit rws =>
+  def findById(id: Long) = Action.async { implicit rws =>
     pipelineService.findById(PipelineId(id)).map { pipeline =>
       Ok(Json.toJson(pipeline))
     }.getOrElse {
@@ -25,7 +25,7 @@ class PipelineApiController(implicit inj: Injector) extends Controller with Inje
     }
   }
 
-  def visualizationById(id: Long) = DBAction { implicit rws =>
+  def visualizationById(id: Long) = Action.async { implicit rws =>
     pipelineService.findById(PipelineId(id)).map { pipeline =>
       Ok(pipelineToJson(pipeline))
     }.getOrElse {
@@ -33,7 +33,7 @@ class PipelineApiController(implicit inj: Injector) extends Controller with Inje
     }
   }
 
-  def evaluations(id: Long, skip: Int = 0, take: Int = 50) = DBAction { implicit rws =>
+  def evaluations(id: Long, skip: Int = 0, take: Int = 50) = Action.async { implicit rws =>
 
     val pipelineId = PipelineId(id)
 
@@ -44,7 +44,7 @@ class PipelineApiController(implicit inj: Injector) extends Controller with Inje
     Ok(result)
   }
 
-  def list(skip: Int = 0, take: Int = 50, discoveryId: Option[Long] = None, visualizerId: Option[Long] = None) = DBAction { implicit rws =>
+  def list(skip: Int = 0, take: Int = 50, discoveryId: Option[Long] = None, visualizerId: Option[Long] = None) = Action.async { implicit rws =>
 
     val pipelineDiscoveryId = discoveryId.map(PipelineDiscoveryId.apply)
     val visualizerTemplateId = visualizerId.map(ComponentTemplateId.apply)

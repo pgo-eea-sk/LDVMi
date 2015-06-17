@@ -16,7 +16,7 @@ class VisualizationController(implicit inj: Injector) extends Controller with In
   val pipelineService = inject[PipelineService]
   val dataSourceService = inject[DataSourceService]
 
-  def dataSource = DBAction { implicit rws =>
+  def dataSource = Action.async { implicit rws =>
     Ok(views.html.visualization.dataSource())
   }
 
@@ -71,7 +71,7 @@ class VisualizationController(implicit inj: Injector) extends Controller with In
     }
   }
 
-  def visualize(pipelineEvaluationId: Long) = DBAction { implicit rws =>
+  def visualize(pipelineEvaluationId: Long) = Action.async { implicit rws =>
 
     withEvaluation(pipelineEvaluationId) { e =>
 
@@ -86,7 +86,7 @@ class VisualizationController(implicit inj: Injector) extends Controller with In
 
   }
 
-  def treemap(pipelineEvaluationId: Long) = DBAction { implicit rws =>
+  def treemap(pipelineEvaluationId: Long) = Action.async { implicit rws =>
     withEvaluation(pipelineEvaluationId) { e =>
       Ok(views.html.visualizer.treemap(e.id.get))
     }
@@ -96,7 +96,7 @@ class VisualizationController(implicit inj: Injector) extends Controller with In
     pipelineService.findEvaluationById(PipelineEvaluationId(id)).map(func).getOrElse(NotFound)
   }
 
-  def discover(dataSourceTemplateId: Option[Long], combine: Boolean = false) = DBAction { rws =>
+  def discover(dataSourceTemplateId: Option[Long], combine: Boolean = false) = Action.async { rws =>
 
     val n = if (combine) {1} else {0}
 

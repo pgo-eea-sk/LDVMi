@@ -4,7 +4,6 @@ import controllers.api.JsonImplicits._
 import model.entity.PipelineEvaluationId
 import play.api.Play.current
 import play.api.cache.Cache
-import play.api.db.slick.{Action.async, _}
 import play.api.libs.json._
 import play.api.mvc._
 import scaldi.{Injectable, Injector}

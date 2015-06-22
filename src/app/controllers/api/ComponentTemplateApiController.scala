@@ -2,8 +2,6 @@ package controllers.api
 
 import controllers.api.JsonImplicits._
 import model.entity.{ComponentTemplate, ComponentTemplateId}
-import play.api.Play.current
-import play.api.db.slick.{Action.async, _}
 import play.api.libs.json._
 import play.api.mvc.Result
 import scaldi.{Injectable, Injector}

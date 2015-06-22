@@ -5,8 +5,6 @@ resolvers += "sonatype-releases" at "https://oss.sonatype.org/content/repositori
 // The Play plugin
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.4.0")
 
-addSbtPlugin("com.typesafe.play" % "sbt-fork-run-plugin" % "2.4.0")
-
 // web plugins
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-coffeescript" % "1.0.0")

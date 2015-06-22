@@ -48,7 +48,6 @@ libraryDependencies ++= Seq(
   "org.virtuslab" %% "unicorn-play" % "0.6.2",
   "org.apache.jena" % "jena" % "2.13.0",
   "org.apache.jena" % "jena-arq" % "2.13.0",
-  "com.typesafe.play" %% "play-slick" % "0.8.0",
   "com.newrelic.agent.java" % "newrelic-api" % "3.8.1",
   "joda-time" % "joda-time" % "2.4",
   "org.joda" % "joda-convert" % "1.6",

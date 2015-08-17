@@ -15,6 +15,8 @@ packageDescription := "LDVMi - Linked Data visualizations"
 
 serverLoading in Debian := SystemV
 
+debianPackageDependencies ++= Seq("openjdk-7-jre-headless")
+
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.11.4"
